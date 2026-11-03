@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoSchool Uzbekistan</title>
+<style>
+:root{--green:#128653;--dark:#123d2b;--light:#eaf8ef;--bg:#f5f8f6}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#19372b}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:11px;padding:11px 15px;font-weight:bold}
+.primary{background:var(--green);color:white}
+.secondary{background:#e4f5e9;color:#17643e}
+.danger{background:#ffe6e6;color:#ad2727}
+header{background:linear-gradient(120deg,#0b5736,#18a568);color:white;padding:22px 5%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-size:25px;font-weight:900}
+.logo span{color:#b8ffcf}
+header p{margin:5px 0 0;color:#e1ffec}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button{background:#ffffff20;color:white}
+nav button:hover{background:#ffffff40}
+.container{max-width:1200px;margin:auto;padding:24px 16px}
+.hero{background:linear-gradient(120deg,#d8f8e3,#f4fff7);border-radius:22px;padding:28px;margin-bottom:22px;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+.hero h1{font-size:clamp(25px,4vw,40px);margin:0 0 10px;color:#105b38}
+.hero p{line-height:1.7;max-width:650px}
+.hero-icon{font-size:85px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.card{background:white;border:1px solid #e5eee8;border-radius:17px;padding:20px;box-shadow:0 5px 18px #143d2b08}
+.stat{font-size:30px;font-weight:900;color:var(--green);margin:12px 0 5px}
+.muted{color:#718278;font-size:13px}
+.section{margin-top:28px}
+.section h2{font-size:22px}
+.layout{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+.mission{border:1px solid #e3eee6;border-radius:15px;padding:16px;margin:12px 0;background:#fff}
+.mission h3{margin:8px 0}
+.tag{display:inline-block;background:#e6f8ec;color:#147448;border-radius:20px;padding:5px 9px;font-size:12px;font-weight:bold}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d5e3d9;border-radius:10px;margin:6px 0 13px;background:#fff}
+label{font-size:14px;font-weight:bold}
+form{max-width:540px}
+.hidden{display:none!important}
+table{border-collapse:collapse;width:100%;background:white}
+th,td{text-align:left;padding:12px 9px;border-bottom:1px solid #e8eee9}
+th{background:#eff8f1;font-size:13px}
+.table-wrap{overflow-x:auto;border-radius:13px}
+.photo{width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-top:8px}
+.notice{background:#fff7db;border:1px solid #f3df9b;border-radius:12px;padding:13px;line-height:1.6}
+footer{text-align:center;padding:30px;color:#718278}
+.small{font-size:12px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#153d2b;color:white;padding:13px 18px;border-radius:12px;display:none;z-index:10}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}}
+@media(max-width:450px){.grid{grid-template-columns:1fr 1fr}.card{padding:13px}.hero{padding:20px}.hero-icon{font-size:55px}.logo{font-size:21px}th,td{font-size:12px}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">🌿 EcoSchool <span>UZ</span></div>
+    <p>Yashil kelajak — bizning qo‘limizda!</p>
+  </div>
+  <nav>
+    <button onclick="showPage('home')">Dashboard</button>
+    <button onclick="showPage('missions')">Missiyalar</button>
+    <button onclick="showPage('ranking')">Reyting</button>
+    <button onclick="showPage('register')">Ro‘yxatdan o‘tish</button>
+    <button onclick="showPage('adminLogin')">🔐 Admin</button>
+  </nav>
+</header>
+
+<main class="container">
+
+<section id="home">
+  <div class="hero">
+    <div>
+      <span class="tag">🇺🇿 ECO SCHOOL UZBEKISTAN</span>
+      <h1>Tabiatni asra,<br>kelajakni yarat!</h1>
+      <p>Maktabingiz bilan ekologik missiyalarni bajaring, rasmlar yuboring va O‘zbekiston maktablari reytingida yuqoriga ko‘tariling.</p>
+      <button class="primary" onclick="showPage('missions')">Missiyalarni ko‘rish →</button>
+      <button class="secondary" onclick="showPage('register')">Qo‘shilish</button>
+    </div>
+    <div class="hero-icon">🌎🌱</div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div>👨‍🎓 O‘quvchilar</div><div class="stat" id="usersCount">0</div><div class="muted">Ro‘yxatdan o‘tganlar</div></div>
+    <div class="card"><div>🏫 Sinflar</div><div class="stat" id="classesCount">0</div><div class="muted">Faol sinflar</div></div>
+    <div class="card"><div>📸 Missiyalar</div><div class="stat" id="doneCount">0</div><div class="muted">Tasdiqlangan topshiriqlar</div></div>
+    <div class="card"><div>⭐ Ballar</div><div class="stat" id="pointsCount">0</div><div class="muted">Jami yig‘ilgan ballar</div></div>
+  </div>
+
+  <div class="section layout">
+    <div class="card">
+      <h2>🏆 Sinflar reytingi</h2>
+      <div class="table-wrap">
+        <table><thead><tr><th>O‘rin</th><th>Sinf</th><th>Ball</th></tr></thead>
+        <tbody id="topClasses"></tbody></table>
+      </div>
+      <p class="muted">Har bir tasdiqlangan missiya uchun sinfga 5 ball.</p>
+      <button class="secondary" onclick="showPage('ranking')">To‘liq reyting</button>
+    </div>
+    <div class="card">
+      <h2>🟢 Oxirgi faollik</h2>
+      <div id="activity"><p class="muted">Hozircha faollik yo‘q.</p></div>
+      <h3>🌳 Bizning maqsadimiz</h3>
+      <p>Toza maktab, toza mahalla va yashil O‘zbekiston!</p>
+    </div>
+  </div>
+</section>
+
+<section id="register" class="hidden">
+  <div class="card">
+    <h2>🎓 O‘quvchi ro‘yxatdan o‘tishi</h2>
+    <p class="muted">5-sinfdan 10-sinfgacha bo‘lgan o‘quvchilar uchun.</p>
+    <form id="registerForm">
+      <label>O‘quvchining ism-familiyasi</label>
+      <input id="studentName" required maxlength="70" placeholder="Masalan: Ali Valiyev">
+      <label>Viloyat</label>
+      <select id="region" required>
+        <option value="">Viloyatni tanlang</option>
+        <option>Qoraqalpog‘iston Respublikasi</option>
+        <option>Toshkent shahri</option><option>Toshkent viloyati</option>
+        <option>Buxoro viloyati</option><option>Samarqand viloyati</option>
+        <option>Andijon viloyati</option><option>Farg‘ona viloyati</option>
+        <option>Namangan viloyati</option><option>Qashqadaryo viloyati</option>
+        <option>Surxondaryo viloyati</option><option>Jizzax viloyati</option>
+        <option>Sirdaryo viloyati</option><option>Navoiy viloyati</option>
+        <option>Xorazm viloyati</option>
+      </select>
+      <label>Maktab nomi yoki raqami</label>
+      <input id="school" required maxlength="100" placeholder="Masalan: 12-maktab">
+      <label>Sinf</label>
+      <select id="grade" required>
+        <option value="">Sinfni tanlang</option>
+        <option value="5">5-sinf</option><option value="6">6-sinf</option>
+        <option value="7">7-sinf</option><option value="8">8-sinf</option>
+        <option value="9">9-sinf</option><option value="10">10-sinf</option>
+      </select>
+      <label>Login</label>
+      <input id="login" required minlength="3" maxlength="30" placeholder="O‘zingizga login yarating">
+      <label>Parol</label>
+      <input id="password" type="password" required minlength="6" maxlength="100" placeholder="Kamida 6 ta belgi">
+      <button class="primary" type="submit">Ro‘yxatdan o‘tish</button>
+    </form>
+    <hr>
+    <h3>Avval ro‘yxatdan o‘tganmisiz?</h3>
+    <form id="loginForm">
+      <label>Login</label><input id="loginName" required>
+      <label>Parol</label><input id="loginPassword" type="password" required>
+      <button class="primary">Kirish</button>
+    </form>
+  </div>
+</section>
+
+<section id="missions" class="hidden">
+  <div class="hero">
+    <div><h1>🌱 Ekologik missiyalar</h1><p>Topshiriqni bajaring, suratga oling va yuboring. Admin tasdiqlagan har bir missiya uchun sinfingizga 5 ball qo‘shiladi.</p></div>
+    <div class="hero-icon">♻️</div>
+  </div>
+  <div id="currentUser" class="notice">Missiya yuborish uchun avval ro‘yxatdan o‘ting yoki tizimga kiring.</div>
+  <div class="grid" id="missionList"></div>
+  <div class="card section" id="submitMission">
+    <h2>📷 Bajarilgan missiyani yuborish</h2>
+    <form id="missionForm">
+      <label>Missiyani tanlang</label>
+      <select id="missionChoice" required></select>
+      <label>Izoh</label>
+      <textarea id="missionNote" rows="3" maxlength="500" placeholder="Nima ish bajardingiz?"></textarea>
+      <label>Dalil rasmi</label>
+      <input id="missionPhoto" type="file" accept="image/*" capture="environment" required>
+      <p class="muted">Faqat o‘zingiz olgan, missiyani tasdiqlovchi rasmni yuboring. Maxfiy ma’lumotlarni suratga olmang.</p>
+      <button class="primary" type="submit">📤 Missiyani yuborish</button>
+    </form>
+    <h3>Yuborgan missiyalarim</h3>
+    <div id="myMissions"></div>
+  </div>
+</section>
+
+<section id="ranking" class="hidden">
+  <div class="card">
+    <h2>🏆 O‘zbekiston sinflari reytingi</h2>
+    <p class="muted">Eng ko‘p tasdiqlangan ekologik missiya bajargan sinflar.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>O‘rin</th><th>Viloyat</th><th>Maktab</th><th>Sinf</th><th>Missiya</th><th>Ball</th></tr></thead>
+      <tbody id="rankingBody"></tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="adminLogin" class="hidden">
+  <div class="card">
+    <h2>🔐 Administrator kirishi</h2>
+    <div class="notice">Bu namuna versiyasida admin paroli HTML kodida ko‘rsatilgan. Haqiqiy loyihada admin huquqlari serverda himoyalanishi shart.</div>
+    <form id="adminLoginForm">
+      <label>Admin paroli</label>
+      <input type="password" id="adminPassword" required placeholder="Admin paroli">
+      <button class="primary">Admin panelga kirish</button>
+    </form>
+  </div>
+</section>
+
+<section id="admin" class="hidden">
+  <div class="hero">
+    <div><h1>🛡️ Admin panel</h1><p>O‘quvchilar, missiyalar, dalil rasmlari va sinflar reytingini boshqarish.</p></div>
+    <button class="danger" onclick="adminOut()">Chiqish</button>
+  </div>
+  <div class="notice">Demo admin paroli: <b>EcoAdmin2026!</b> Bu parolni haqiqiy internet loyihasida ishlatma. Ushbu HTML fayl xavfsiz admin autentifikatsiyasi hisoblanmaydi.</div>
+  <div class="section card">
+    <h2>📋 Missiyalarni tekshirish</h2>
+    <div id="adminSubmissions"></div>
+  </div>
+  <div class="section card">
+    <h2>👥 Ro‘yxatdan o‘tganlar</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Ism</th><th>Viloyat</th><th>Maktab</th><th>Sinf</th><th>Login</th></tr></thead>
+      <tbody id="adminUsers"></tbody>
+    </table></div>
+  </div>
+  <div class="section card">
+    <h2>➕ Yangi missiya yaratish</h2>
+    <form id="newMissionForm">
+      <label>Missiya nomi</label><input id="newTitle" required maxlength="100">
+      <label>Tavsif</label><textarea id="newDescription" required maxlength="500"></textarea>
+      <button class="primary">Missiyani qo‘shish</button>
+    </form>
+  </div>
+  <div class="section card">
+    <h2>⚙️ Demo ma’lumotlarini tozalash</h2>
+    <p class="muted">Barcha o‘quvchilar va topshiriqlar ushbu brauzerdan o‘chiriladi.</p>
+    <button class="danger" onclick="resetData()">Barcha ma’lumotlarni o‘chirish</button>
+  </div>
+</section>
+</main>
+
+<footer>🌿 EcoSchool Uzbekistan · Tabiatni asrash — barchamizning vazifamiz.</footer>
+<div id="toast"></div>
+
+<script>
+// FAQAT MAHALLIY NAMUNA. Haqiqiy xizmat uchun server kerak.
+const DEMO_ADMIN_PASSWORD = "EcoAdmin2026!";
+const KEY = "ecoschool_uz_demo_v1";
+const defaultMissions = [
+ {id:1,title:"🌳 Daraxt ekish",desc:"Maktab hududida daraxt yoki gul eking."},
+ {id:2,title:"♻️ Chiqindilarni saralash",desc:"Qog‘oz, plastik va boshqa chiqindilarni ajrating."},
+ {id:3,title:"🧹 Maktabni tozalash",desc:"Maktab hovlisini tozalash aksiyasida qatnashing."},
+ {id:4,title:"💧 Suvni tejash",desc:"Suv isrofini kamaytirish bo‘yicha foydali ish bajaring."},
+ {id:5,title:"💡 Elektrni tejash",desc:"Keraksiz chiroqlarni o‘chirish bo‘yicha targ‘ibot qiling."},
+ {id:6,title:"🌱 Ekologik targ‘ibot",desc:"Tabiatni asrash mavzusida plakat yoki e'lon tayyorlang."}
+];
+function fresh(){return {users:[],missions:defaultMissions,submissions:[],activity:[]}}
+function load(){
+ try {const x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.users)&&Array.isArray(x.missions)&&Array.isArray(x.submissions))return x}catch(e){}
+ return fresh();
+}
+let db=load(), currentUser=null, isAdmin=false;
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function notify(s){let t=document.getElementById("toast");t.textContent=s;t.style.display="block";setTimeout(()=>t.style.display="none",2800)}
+function showPage(id){
+ document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+ if(id==="admin"&&!isAdmin){showPage("adminLogin");return}
+ render();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function activity(s){db.activity.unshift({text:s,time:new Date().toLocaleString("uz-UZ")});db.activity=db.activity.slice(0,12)}
+document.getElementById("registerForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ let login=document.getElementById("login").value.trim().toLowerCase();
+ if(db.users.some(u=>u.login===login)){notify("Bu login band!");return}
+ let u={id:Date.now(),name:document.getElementById("studentName").value.trim(),
+ region:document.getElementById("region").value,school:document.getElementById("school").value.trim(),
+ grade:Number(document.getElementById("grade").value),login,
+ // Demo paroli. Haqiqiy tizimda parol serverda xavfsiz xeshlanishi kerak.
+ password:document.getElementById("password").value,created:new Date().toISOString()};
+ db.users.push(u);currentUser=u;activity(u.name+" ro‘yxatdan o‘tdi");
+ save();e.target.reset();notify("Ro‘yxatdan o‘tish muvaffaqiyatli!");
+ showPage("missions");
+});
+document.getElementById("loginForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ let login=document.getElementById("loginName").value.trim().toLowerCase();
+ let pass=document.getElementById("loginPassword").value;
+ let u=db.users.find(x=>x.login===login&&x.password===pass);
+ if(!u){notify("Login yoki parol noto‘g‘ri.");return}
+ currentUser=u;activity(u.name+" tizimga kirdi");save();notify("Xush kelibsiz!");
+ showPage("home");
+});
+document.getElementById("adminLoginForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ if(document.getElementById("adminPassword").value!==DEMO_ADMIN_PASSWORD){notify("Admin paroli noto‘g‘ri!");return}
+ isAdmin=true;e.target.reset();showPage("admin");notify("Demo admin panel ochildi.");
+});
+function adminOut(){isAdmin=false;showPage("home")}
+document.getElementById("missionForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ if(!currentUser){notify("Avval ro‘yxatdan o‘ting yoki tizimga kiring.");showPage("register");return}
+ let file=document.getElementById("missionPhoto").files[0];
+ if(!file||!file.type.startsWith("image/")){notify("Iltimos, rasm tanlang.");return}
+ if(file.size>2*1024*1024){notify("Rasm 2 MB dan kichik bo‘lsin.");return}
+ let reader=new FileReader();
+ reader.onload=()=>{
+  db.submissions.push({id:Date.now(),userId:currentUser.id,
+   missionId:Number(document.getElementById("missionChoice").value),
+   note:document.getElementById("missionNote").value.trim(),
+   photo:reader.result,status:"pending",created:new Date().toISOString()});
+  activity(currentUser.name+" missiya yubordi");
+  save();e.target.reset();notify("Missiya tekshiruvga yuborildi!");
+ };
+ reader.readAsDataURL(file);
+});
+document.getElementById("newMissionForm").addEventListener("submit",e=>{
+ e.preventDefault();if(!isAdmin)return;
+ db.missions.push({id:Date.now(),title:document.getElementById("newTitle").value.trim(),
+ desc:document.getElementById("newDescription").value.trim()});
+ activity("Yangi ekologik missiya qo‘shildi");save();e.target.reset();notify("Missiya qo‘shildi!");
+});
+function approve(id,ok){
+ if(!isAdmin)return;
+ let s=db.submissions.find(x=>x.id===id);
+ if(!s||s.status!=="pending")return;
+ s.status=ok?"approved":"rejected";
+ if(ok){
+  let u=db.users.find(x=>x.id===s.userId);
+  activity((u?u.name:"O‘quvchi")+" missiyasi tasdiqlandi: +5 ball");
+ }else activity("Missiya rad etildi");
+ save();notify(ok?"Missiya tasdiqlandi!":"Missiya rad etildi.");
+}
+function classScores(){
+ let map={};
+ db.users.forEach(u=>{
+  let k=[u.region,u.school,u.grade].join("|");
+  if(!map[k])map[k]={region:u.region,school:u.school,grade:u.grade,points:0,count:0};
+ });
+ db.submissions.filter(s=>s.status==="approved").forEach(s=>{
+  let u=db.users.find(x=>x.id===s.userId);if(!u)return;
+  let k=[u.region,u.school,u.grade].join("|");
+  if(!map[k])map[k]={region:u.region,school:u.school,grade:u.grade,points:0,count:0};
+  map[k].points+=5;map[k].count++;
+ });
+ return Object.values(map).sort((a,b)=>b.points-a.points||b.count-a.count);
+}
+function render(){
+ let approved=db.submissions.filter(s=>s.status==="approved");
+ document.getElementById("usersCount").textContent=db.users.length;
+ document.getElementById("classesCount").textContent=classScores().length;
+ document.getElementById("doneCount").textContent=approved.length;
+ document.getElementById("pointsCount").textContent=approved.length*5;
+ let scores=classScores();
+ document.getElementById("topClasses").innerHTML=scores.slice(0,5).map((x,i)=>
+ `<tr><td>${i+1}</td><td>${esc(x.grade)}-sinf<br><span class="muted">${esc(x.school)}</span></td><td><b>${x.points}</b> ⭐</td></tr>`
+ ).join("")||'<tr><td colspan="3">Hozircha sinflar yo‘q.</td></tr>';
+ document.getElementById("rankingBody").innerHTML=scores.map((x,i)=>
+ `<tr><td>${i+1}</td><td>${esc(x.region)}</td><td>${esc(x.school)}</td><td>${x.grade}-sinf</td><td>${x.count}</td><td><b>${x.points}</b></td></tr>`
+ ).join("")||'<tr><td colspan="6">Reyting hali shakllanmagan.</td></tr>';
+ document.getElementById("activity").innerHTML=db.activity.slice(0,6).map(a=>
+ `<p>🌿 ${esc(a.text)}<br><span class="muted">${esc(a.time)}</span></p>`
+ ).join("")||'<p class="muted">Hozircha faollik yo‘q.</p>';
+ document.getElementById("missionList").innerHTML=db.missions.map(m=>
+ `<div class="card"><span class="tag">EKO MISSIYA</span><h3>${esc(m.title)}</h3><p>${esc(m.desc)}</p><b>⭐ +5 ball</b><p><button class="primary" onclick="chooseMission(${m.id})">Bajarishga kirish</button></p></div>`
+ ).join("");
+ document.getElementById("missionChoice").innerHTML=db.missions.map(m=>
+ `<option value="${m.id}">${esc(m.title)}</option>`).join("");
+ document.getElementById("currentUser").innerHTML=currentUser?
+ `👤 <b>${esc(currentUser.name)}</b> · ${esc(currentUser.region)} · ${esc(currentUser.school)} · ${currentUser.grade}-sinf`:
+ `Missiya yuborish uchun avval <button class="secondary" onclick="showPage('register')">ro‘yxatdan o‘ting</button>.`;
+ document.getElementById("myMissions").innerHTML=currentUser?
+ db.submissions.filter(s=>s.userId===currentUser.id).map(s=>{
+  let m=db.missions.find(x=>x.id===s.missionId);
+  let label=s.status==="approved"?"✅ Tasdiqlandi (+5 ball)":s.status==="rejected"?"❌ Rad etildi":"⏳ Tekshiruvda";
+  return `<div class="mission"><b>${esc(m?m.title:"Missiya")}</b><p>${label}</p><img class="photo" src="${s.photo}" alt="Yuborilgan dalil rasmi"><p class="muted">${esc(s.note)}</p></div>`;
+ }).join("")||'<p class="muted">Hali missiya yubormagansiz.</p>':
+ '<p class="muted">O‘quvchi sifatida kiring.</p>';
+ if(isAdmin){
+  document.getElementById("adminUsers").innerHTML=db.users.map(u=>
+  `<tr><td>${esc(u.name)}</td><td>${esc(u.region)}</td><td>${esc(u.school)}</td><td>${u.grade}</td><td>${esc(u.login)}</td></tr>`).join("")||'<tr><td colspan="5">O‘quvchilar yo‘q.</td></tr>';
+  document.getElementById("adminSubmissions").innerHTML=db.submissions.map(s=>{
+   let u=db.users.find(x=>x.id===s.userId),m=db.missions.find(x=>x.id===s.missionId);
+   return `<div class="mission"><h3>${esc(m?m.title:"Missiya")}</h3><p>👤 ${esc(u?u.name:"O‘chirilgan foydalanuvchi")} · ${u?u.grade+"-sinf":""}</p><img class="photo" src="${s.photo}" alt="Missiya dalil rasmi"><p>${esc(s.note)}</p><p><b>${s.status==="approved"?"Tasdiqlangan":s.status==="rejected"?"Rad etilgan":"Tekshiruvda"}</b></p>${s.status==="pending"?`<button class="primary" onclick="approve(${s.id},true)">Tasdiqlash (+5)</button> <button class="danger" onclick="approve(${s.id},false)">Rad etish</button>`:""}</div>`;
+  }).join("")||'<p>Hozircha topshiriqlar yuborilmagan.</p>';
+ }
+}
+function chooseMission(id){
+ document.getElementById("missionChoice").value=id;
+ document.getElementById("submitMission").scrollIntoView({behavior:"smooth"});
+}
+function resetData(){
+ if(!isAdmin)return;
+ if(!confirm("Barcha demo ma’lumotlarini butunlay o‘chirishni tasdiqlaysizmi?"))return;
+ db=fresh();currentUser=null;activity("Demo loyiha qayta boshlandi");save();showPage("home");notify("Demo ma’lumotlari tozalandi.");
+}
+render();
+</script>
+</body>
+</html>
